@@ -968,6 +968,7 @@ public class NEUManager {
 	 */
 	@Deprecated
 	public String getInternalNameForItem(ItemStack stack) {
+		System.out.println(createItemResolutionQuery().withItemStack(stack).resolveInternalName()); // works. not null
 		return createItemResolutionQuery()
 			.withItemStack(stack)
 			.resolveInternalName();

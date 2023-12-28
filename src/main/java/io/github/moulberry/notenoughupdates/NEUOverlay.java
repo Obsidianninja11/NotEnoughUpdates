@@ -1119,6 +1119,7 @@ public class NEUOverlay extends Gui {
 					if (hover != null) {
 						internalname.set(manager.getInternalNameForItem(hover));
 						itemstack.set(hover);
+						System.out.println(internalname.get()); // this is printing null when hovering over buy/sell orders
 					}
 				} else {
 					Utils.pushGuiScale(NotEnoughUpdates.INSTANCE.config.itemlist.paneGuiScale);
@@ -1164,6 +1165,7 @@ public class NEUOverlay extends Gui {
 						}
 					}
 					JsonObject item = manager.getItemInformation().get(internalname.get());
+//					System.out.println(item);
 					if (item != null) {
 						if (keyPressed == manager.keybindViewUsages.getKeyCode()) {
 							manager.displayGuiItemUsages(internalname.get());
@@ -1219,6 +1221,7 @@ public class NEUOverlay extends Gui {
 							return true;
 						} else if (keyPressed == NotEnoughUpdates.INSTANCE.config.misc.openAHKeybind) {
 							String displayName = item.get("displayname").getAsString();
+							System.out.println(displayName);
 
 							String cleanName = Utils.cleanColour(displayName).replace("[Lvl {LVL}]", "]").trim();
 

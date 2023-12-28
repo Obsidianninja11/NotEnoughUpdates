@@ -104,6 +104,7 @@ public class ItemResolutionQuery {
 		String resolvedName = resolveFromSkyblock();
 		if (resolvedName == null) {
 			resolvedName = resolveContextualName();
+//			System.out.println(resolvedName);
 		} else {
 			switch (resolvedName.intern()) {
 				case "PET":
@@ -126,9 +127,12 @@ public class ItemResolutionQuery {
 				case "PARTY_HAT_SLOTH":
 					resolvedName = resolveSlothHatName();
 					break;
+				case "POTION":
+					resolvedName = resolvePotionName();
+					break;
 			}
 		}
-
+//		System.out.println(resolvedName);
 		return resolvedName;
 	}
 
@@ -179,6 +183,15 @@ public class ItemResolutionQuery {
 		boolean isOnBazaar = isBazaar(inventorySlots.getLowerChestInventory());
 		String displayName = ItemUtils.getDisplayName(compound);
 		if (displayName == null) return null;
+		if (displayName.startsWith("§a§lBUY") || displayName.startsWith("§6§lSELL") && guiName.equals("Your Bazaar Orders")) {
+			String orderName = displayName.substring(displayName.indexOf(' ') + 1);
+			if (itemType == Items.enchanted_book) {
+				return resolveEnchantmentByName(orderName);
+			}
+			else {
+				return findInternalNameByDisplayName(orderName, false);
+			}
+		}
 		if (itemType == Items.enchanted_book && isOnBazaar && compound != null) {
 			return resolveEnchantmentByName(displayName);
 		}
@@ -304,6 +317,11 @@ public class ItemResolutionQuery {
 	private String resolvePhoneCase() {
 		String model = getExtraAttributes().getString("model");
 		return "ABICASE_" + model.toUpperCase(Locale.ROOT);
+	}
+
+	private String resolvePotionName() {
+		String model = getExtraAttributes().getString("potion");
+		return "POTION_" + model.toUpperCase(Locale.ROOT);
 	}
 
 	private String resolveEnchantedBookNameFromNBT() {
